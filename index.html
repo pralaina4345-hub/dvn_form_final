@@ -132,7 +132,7 @@ document.getElementById('saveBtn').onclick=()=>{
    headers:{'Content-Type':'application/json'},
    body:JSON.stringify(data)
  }).then(r=>r.json()).then(res=>{
-   if(res.status==='ok') alert('✅ Data berhasil disimpan ke Google Sheet!');
+   if(res.status==='ok') alert(' Yeayy! Berhasil.. Anda akan memulai journey bersama Vic & Tere ✅');
    else alert('❌ Gagal menyimpan: '+res.message);
  }).catch(e=>alert('⚠️ Error jaringan: '+e.message));
 };
