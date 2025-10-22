@@ -3,59 +3,138 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>DVN Glow Challenge</title>
+<title>DVN Glow Challenge by Vic & Tere</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-body { font-family: sans-serif; background: #fff5f7; padding: 30px; }
-.card { background: white; padding: 20px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-button { padding: 10px 16px; border: none; background: #e8b2b8; color: white; border-radius: 8px; cursor: pointer; }
-.opt { border:1px solid #eee; border-radius:8px; padding:8px; margin:4px 0; cursor:pointer; }
-.opt.selected { background:#f9d2d8; }
+:root{
+  --rose-light:#fff5f7; --rose:#f9d2d8; --rose-gold:#e8b2b8; --text:#503030; --accent:#d48b85;
+  font-family:'Poppins',sans-serif;
+}
+body{margin:0;padding:0;background:linear-gradient(180deg,#fff5f7,#ffe9ec);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh}
+.container{max-width:700px;width:100%;padding:20px}
+.card{background:white;border-radius:20px;box-shadow:0 10px 30px rgba(212,139,133,0.15);padding:28px;position:relative;overflow:hidden}
+header{text-align:center}
+header h1{font-family:'Playfair Display',serif;color:var(--accent);font-size:30px;margin:0}
+header .subtle{color:#a05e64;font-size:15px;margin-top:4px}
+.welcome{background:linear-gradient(90deg,#fff1f3,#ffe7ea);border-radius:14px;padding:14px;margin:20px 0;font-size:15px;line-height:1.5;text-align:center;color:#6b4042;font-weight:400}
+.form-vertical label{display:block;margin-bottom:5px;font-size:13px;color:#9d666a}
+.form-vertical input[type=text],.form-vertical input[type=date],.form-vertical input[type=tel]{width:100%;padding:10px;margin-bottom:15px;border-radius:10px;border:1px solid #f0c6ca;background:#fff;color:var(--text)}
+.question{margin-bottom:12px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{padding:10px;border:1px solid #ffdbe0;border-radius:10px;background:#fff;cursor:pointer;text-align:left}
+.opt.selected{background:linear-gradient(90deg,#ffe5eb,#ffd5db);border-color:var(--accent);box-shadow:0 4px 12px rgba(212,139,133,0.2)}
+button.primary{background:linear-gradient(90deg,#e8b2b8,#f9d2d8);border:none;padding:12px 16px;border-radius:12px;color:#fff;font-weight:600;width:100%;cursor:pointer;box-shadow:0 4px 15px rgba(232,178,184,0.3)}
+button.primary:hover{opacity:0.95}
+button.secondary{background:#fff;border:1px solid var(--accent);padding:12px 16px;border-radius:12px;color:#d48b85;font-weight:600;width:100%;cursor:pointer;margin-top:12px}
+button.secondary:hover{background:linear-gradient(90deg,#fff1f3,#ffe7ea)}
+.result-page{display:none;text-align:center;padding:40px;animation:fadeIn 0.8s ease forwards}
+.score-large{font-size:48px;font-weight:700;color:#d48b85}
+.badge-large{font-size:20px;padding:10px 14px;border-radius:999px;background:linear-gradient(90deg,#ffeef1,#fff);display:inline-block;margin:10px 0;color:#6b4042}
+.motivation-long{font-size:16px;color:#8d5d60;line-height:1.6;margin-top:12px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
-<div class="card">
-  <h2>DVN Glow Challenge</h2>
-  <input id="name" placeholder="Nama"><br>
-  <input id="age" placeholder="Usia"><br>
-  <input id="wa" placeholder="Nomor WhatsApp"><br>
-  <div id="questions"></div>
-  <button id="submitBtn">Kirim</button>
+<div class="container">
+  <div class="card" id="mainCard">
+    <header>
+      <h1>DVN Glow Challenge</h1>
+      <div class="subtle">~ Vic & Tere ~</div>
+    </header>
+
+    <div class="welcome">
+      Hai haii! Selamat datang di 30 Days Challenge Vic & Tere ✨<br>
+      Yuk isi form singkat ini dulu ya, buat lihat kondisi kulit & kebiasaan Anda sebelum mulai.<br>
+      Nanti kita bandingkan hasilnya di akhir challenge biar keliatan progress-nya! 💫
+    </div>
+
+    <form id="glowForm" class="form-vertical">
+      <label>Nama</label><input id="name" type="text" placeholder="Nama Anda" required>
+      <label>Usia</label><input id="age" type="text" placeholder="Contoh: 28" required>
+      <label>Tanggal lahir</label><input id="dob" type="date">
+      <label>Nomor WhatsApp</label><input id="wa" type="tel" placeholder="62812xxxx">
+      <div id="questions"></div>
+      <button class="primary" type="submit">Lihat Hasil Saya ✨</button>
+    </form>
+  </div>
+
+  <div class="result-page" id="resultPage">
+    <div class="badge-large" id="badgeText">💎 Excellent</div>
+    <div class="score-large" id="scorePercent">100%</div>
+    <p class="motivation-long" id="motivation"></p>
+    <button class="secondary" id="saveBtn">Simpan Hasil ke Report Admin 📋</button>
+  </div>
 </div>
 
 <script>
-const questions = [
-  {q:"Rutin minum kolagen?",opts:["Setiap hari","Kadang","Jarang","Tidak"],vals:[30,20,10,0]},
-  {q:"Cukup minum air putih?",opts:[">8 gelas","6-8","3-5","<3"],vals:[30,20,10,0]}
+const questions=[
+ {q:"Konsumsi Suplemen Kolagen — Seberapa rutin Anda mengonsumsi suplemen kolagen?",opts:["A. Setiap hari tanpa terlewat","B. Cukup sering","C. Kadang-kadang","D. Tidak pernah"],vals:[30,20,10,0]},
+ {q:"Hidrasi — Berapa banyak air putih yang Anda minum?",opts:[">8 gelas","6–8 gelas","3–5 gelas","<3 gelas"],vals:[30,20,10,0]},
+ {q:"Rutinitas Skincare?",opts:["A. Sangat konsisten","B. Cukup konsisten","C. Kadang-kadang","D. Tidak punya rutinitas"],vals:[30,20,10,0]},
+ {q:"Pola Tidur?",opts:["A. 7–8 jam","B. 5–6 jam","C. Kurang dari 5 jam","D. Sering begadang"],vals:[30,20,10,0]},
+ {q:"Olahraga?",opts:["A. ≥3x seminggu","B. 1–2x seminggu","C. Jarang","D. Tidak pernah"],vals:[30,20,10,0]}
 ];
-const qDiv=document.getElementById('questions');
-const answers=[];
+const qWrap=document.getElementById('questions');
 questions.forEach((qq,i)=>{
-  const d=document.createElement('div');
-  d.innerHTML='<b>'+(i+1)+'. '+qq.q+'</b>';
+  const div=document.createElement('div');
+  div.className='question';
+  const p=document.createElement('p');
+  p.textContent=(i+1)+'. '+qq.q;
+  div.appendChild(p);
+  const optBox=document.createElement('div');
+  optBox.className='options';
   qq.opts.forEach((o,j)=>{
-    const opt=document.createElement('div');
-    opt.className='opt'; opt.textContent=o;
-    opt.onclick=()=>{
-      d.querySelectorAll('.opt').forEach(e=>e.classList.remove('selected'));
-      opt.classList.add('selected'); answers[i]=qq.vals[j];
+    const btn=document.createElement('div');
+    btn.className='opt';
+    btn.textContent=o;
+    btn.onclick=()=>{
+      div.querySelectorAll('.opt').forEach(el=>el.classList.remove('selected'));
+      btn.classList.add('selected');
+      btn.dataset.value=qq.vals[j];
+      btn.dataset.answer=o;
     };
-    d.appendChild(opt);
+    optBox.appendChild(btn);
   });
-  qDiv.appendChild(d);
+  div.appendChild(optBox);
+  qWrap.appendChild(div);
 });
 
-document.getElementById('submitBtn').onclick=()=>{
-  const name=document.getElementById('name').value.trim();
-  const age=document.getElementById('age').value.trim();
-  const wa=document.getElementById('wa').value.trim();
-  const score=answers.reduce((a,b)=>a+(b||0),0)/60*100;
-  fetch('/api/save', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({nama:name,usia:age,whatsapp:wa,skor:score})
-  }).then(r=>r.json()).then(res=>{
-    alert('Data tersimpan!');
-  }).catch(e=>alert('Error: '+e.message));
+let data={};
+const form=document.getElementById('glowForm');
+form.onsubmit=(e)=>{
+ e.preventDefault();
+ let total=0,count=0,answers=[];
+ document.querySelectorAll('.question').forEach(q=>{
+   const sel=q.querySelector('.opt.selected');
+   if(sel){total+=Number(sel.dataset.value);count++;answers.push(sel.dataset.answer);}else{answers.push('Belum dijawab');}
+ });
+ if(count<questions.length){alert('Jawab semua pertanyaan dulu ya 💕');return;}
+ const percent=Math.round(total/(questions.length*30)*100);
+ const name=document.getElementById('name').value.trim();
+ let badge,msg;
+ if(percent>=85){badge='💎 Excellent';msg='Keren banget '+name+'! You’re a DVN Glow Star ✨';}
+ else if(percent>=70){badge='🌷 Good';msg='Hebat '+name+'! Kulit kamu di jalur yang tepat 💕';}
+ else if(percent>=40){badge='☁️ Needs Improvement';msg='Semangat '+name+'! You’re getting closer 💪';}
+ else{badge='💧 Needs Attention';msg='Ayo mulai pelan-pelan '+name+', your glow journey begins now 💫';}
+
+ document.getElementById('badgeText').textContent=badge;
+ document.getElementById('scorePercent').textContent=name+" — "+percent+'%';
+ document.getElementById('motivation').textContent=msg;
+ document.getElementById('mainCard').style.display='none';
+ document.getElementById('resultPage').style.display='block';
+
+ data={nama:name,usia:document.getElementById('age').value,tanggal_lahir:document.getElementById('dob').value,whatsapp:document.getElementById('wa').value,skor:percent,badge:badge,jawaban:answers};
+};
+
+document.getElementById('saveBtn').onclick=()=>{
+ fetch('/api/save',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify(data)
+ }).then(r=>r.json()).then(res=>{
+   if(res.status==='ok') alert('✅ Data berhasil disimpan ke Google Sheet!');
+   else alert('❌ Gagal menyimpan: '+res.message);
+ }).catch(e=>alert('⚠️ Error jaringan: '+e.message));
 };
 </script>
 </body>
