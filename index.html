@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DVN Glow Challenge</title>
+<style>
+body { font-family: sans-serif; background: #fff5f7; padding: 30px; }
+.card { background: white; padding: 20px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+button { padding: 10px 16px; border: none; background: #e8b2b8; color: white; border-radius: 8px; cursor: pointer; }
+.opt { border:1px solid #eee; border-radius:8px; padding:8px; margin:4px 0; cursor:pointer; }
+.opt.selected { background:#f9d2d8; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>DVN Glow Challenge</h2>
+  <input id="name" placeholder="Nama"><br>
+  <input id="age" placeholder="Usia"><br>
+  <input id="wa" placeholder="Nomor WhatsApp"><br>
+  <div id="questions"></div>
+  <button id="submitBtn">Kirim</button>
+</div>
+
+<script>
+const questions = [
+  {q:"Rutin minum kolagen?",opts:["Setiap hari","Kadang","Jarang","Tidak"],vals:[30,20,10,0]},
+  {q:"Cukup minum air putih?",opts:[">8 gelas","6-8","3-5","<3"],vals:[30,20,10,0]}
+];
+const qDiv=document.getElementById('questions');
+const answers=[];
+questions.forEach((qq,i)=>{
+  const d=document.createElement('div');
+  d.innerHTML='<b>'+(i+1)+'. '+qq.q+'</b>';
+  qq.opts.forEach((o,j)=>{
+    const opt=document.createElement('div');
+    opt.className='opt'; opt.textContent=o;
+    opt.onclick=()=>{
+      d.querySelectorAll('.opt').forEach(e=>e.classList.remove('selected'));
+      opt.classList.add('selected'); answers[i]=qq.vals[j];
+    };
+    d.appendChild(opt);
+  });
+  qDiv.appendChild(d);
+});
+
+document.getElementById('submitBtn').onclick=()=>{
+  const name=document.getElementById('name').value.trim();
+  const age=document.getElementById('age').value.trim();
+  const wa=document.getElementById('wa').value.trim();
+  const score=answers.reduce((a,b)=>a+(b||0),0)/60*100;
+  fetch('/api/save', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({nama:name,usia:age,whatsapp:wa,skor:score})
+  }).then(r=>r.json()).then(res=>{
+    alert('Data tersimpan!');
+  }).catch(e=>alert('Error: '+e.message));
+};
+</script>
+</body>
+</html>
