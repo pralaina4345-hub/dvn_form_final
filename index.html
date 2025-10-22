@@ -68,11 +68,14 @@ button.secondary:hover{background:linear-gradient(90deg,#fff1f3,#ffe7ea)}
 
 <script>
 const questions=[
- {q:"Konsumsi Suplemen Kolagen — Seberapa rutin Anda mengonsumsi suplemen kolagen?",opts:["A. Setiap hari tanpa terlewat","B. Cukup sering","C. Kadang-kadang","D. Tidak pernah"],vals:[30,20,10,0]},
- {q:"Hidrasi — Berapa banyak air putih yang Anda minum?",opts:[">8 gelas","6–8 gelas","3–5 gelas","<3 gelas"],vals:[30,20,10,0]},
- {q:"Rutinitas Skincare?",opts:["A. Sangat konsisten","B. Cukup konsisten","C. Kadang-kadang","D. Tidak punya rutinitas"],vals:[30,20,10,0]},
- {q:"Pola Tidur?",opts:["A. 7–8 jam","B. 5–6 jam","C. Kurang dari 5 jam","D. Sering begadang"],vals:[30,20,10,0]},
- {q:"Olahraga?",opts:["A. ≥3x seminggu","B. 1–2x seminggu","C. Jarang","D. Tidak pernah"],vals:[30,20,10,0]}
+ {q:"Konsumsi Suplemen Kolagen — Seberapa rutin Anda mengonsumsi suplemen kolagen?",opts:["A. Setiap hari tanpa terlewat","B. Cukup sering, mungkin terlewat 1-2 kali seminggu","C. Kadang-kadang saja, tidak teratur","D. Tidak mengonsumsi / baru mau mulai"],vals:[30,20,10,0]},
+ {q:"Hidrasi (Asupan Air Minum) — Berapa banyak air putih yang Anda minum dalam sehari?",opts:["A. Lebih dari 8 gelas (sekitar 2 liter)","B. Sekitar 6-8 gelas","C. Sekitar 3-5 gelas","D. Kurang dari 3 gelas"],vals:[30,20,10,0]},
+ {q:"Rutinitas Skincare — Seberapa konsisten Anda melakukan rutinitas skincare (pagi dan malam)?",opts:["A. Sangat konsisten, hampir tidak pernah terlewat","B. Cukup konsisten, tapi kadang terlewat jika sangat lelah","C. Hanya melakukannya jika teringat, tidak setiap hari","D. Saya tidak punya rutinitas skincare"],vals:[30,20,10,0]},
+ {q:"Produk Skincare — Tahapan skincare dasar apa yang Anda gunakan setiap hari?",opts:["A. Pembersih wajah, pelembap, dan sunscreen (tabir surya)","B. Pembersih wajah dan pelembap, tapi sering lupa sunscreen","C. Hanya pembersih wajah saja","D. Tidak menggunakan produk skincare secara rutin"],vals:[30,20,10,0]},
+ {q:"Pola Makan — Seperti apa gambaran pola makan Anda sehari-hari?",opts:["A. Seimbang, banyak buah & sayur. Membatasi gula dan gorengan.","B. Cukup sehat, tapi masih sering makan makanan manis atau gorengan.","C. Seimbang antara makanan sehat dan kurang sehat (junk food, instan).","D. Lebih banyak makan makanan olahan, gorengan, atau yang tinggi gula."],vals:[30,20,10,0]},
+ {q:"Pola Tidur — Rata-rata, berapa jam Anda tidur setiap malam?",opts:["A. 7-8 jam dengan kualitas tidur yang baik.","B. Sekitar 5-6 jam.","C. Kurang dari 5 jam.","D. Jam tidur sangat berantakan dan sering merasa kurang istirahat."],vals:[30,20,10,0]},
+ {q:"Manajemen Stres — Bagaimana Anda menggambarkan tingkat stres Anda dalam sebulan terakhir?",opts:["A. Rendah dan terkendali. Saya punya cara efektif untuk rileks.","B. Sedang. Ada kalanya merasa tertekan, tapi masih bisa diatasi.","C. Cukup tinggi. Saya sering merasa cemas atau tertekan.","D. Sangat tinggi dan sulit dikendalikan."],vals:[30,20,10,0]},
+ {q:"Aktivitas Fisik (Olahraga) — Seberapa sering Anda berolahraga (misal: jalan cepat, yoga, gym) dalam seminggu?",opts:["A. Rutin, 3 kali seminggu atau lebih.","B. Cukup teratur, sekitar 1-2 kali seminggu.","C. Jarang, mungkin kurang dari sekali dalam seminggu.","D. Hampir tidak pernah berolahraga."],vals:[30,20,10,0]}
 ];
 const qWrap=document.getElementById('questions');
 questions.forEach((qq,i)=>{
